@@ -1,0 +1,5 @@
+views_bulk_reference_edit:
+  version: 'VERSION'
+  css:
+    theme:
+      css/views_bulk_reference_edit.css: {}
