@@ -33,5 +33,5 @@ Configuration
    mode. If it uses the machine name "bulk_edit", the form for the
    "Modify field values" action will use that form mode to determine
    what fields are available for bulk editing.
-5. Configure the supported entity type and bundles, for each type select the editable fields,
+5. Configure the supported entity types and bundles, for each type select the editable fields,
    currently field permissions are not supported.
