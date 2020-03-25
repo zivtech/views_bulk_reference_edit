@@ -1,7 +1,7 @@
 {
   "name": "drupal/views_bulk_reference_edit",
   "type": "drupal-module",
-  "description": "Allows bulk edition of entity field values.",
+  "description": "Allows bulk edition of referenced entity field values.",
   "homepage": "https://www.drupal.org/project/views_bulk_edit",
   "authors": [
     {
@@ -15,7 +15,7 @@
   "license": "GPL-2.0+",
   "require": {
     "drupal/views_bulk_operations": "~1.0 | ~2.0 | ~3.0",
-    "drupal/views_bulk_edit": "~1.0"
+    "drupal/views_bulk_edit": "~2.0"
   },
   "minimum-stability": "dev"
 }
