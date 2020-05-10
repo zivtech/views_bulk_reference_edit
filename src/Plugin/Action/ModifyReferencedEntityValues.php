@@ -158,7 +158,8 @@ class ModifyReferencedEntityValues extends ModifyEntityValues {
    * {@inheritdoc}
    */
   public function execute($entity = NULL) {
-    $referencedEntities = $this->getReferencedEntities($entity->get('id')->value);
+
+    $referencedEntities = $this->getReferencedEntities($entity->id());
     // Load referenced entity.
     $result = $this->t('Skip (field is not present on this bundle)');
 
