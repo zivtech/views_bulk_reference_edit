@@ -107,6 +107,7 @@ class ModifyReferencedEntityValues extends ModifyEntityValues {
     }
 
     return $bundle_data;
+
   }
 
   /**
@@ -222,10 +223,6 @@ class ModifyReferencedEntityValues extends ModifyEntityValues {
    * {@inheritdoc}
    */
   public function setReferencedEntities() {
-
-    // VBO should pass view results but they aren't here.
-    // Initialize view and VBO view data service to get the relationship.
-    $view = $this->getExecutedView();
 
     // Set the referenced entities.
     $vbo_entities = [];
