@@ -67,78 +67,39 @@ class ModifyReferencedEntityValues extends ModifyEntityValues {
     if (!empty($this->context['list']) || $this->context["selected_count"] == $this->context["total_results"]) {
 
       $bundle_info = $this->bundleInfo->getAllBundleInfo();
-      $query_data = [];
 
-      // VBO should pass view results but they aren't here.
-      // Initialize view and VBO view data service to get the relationship entities.
-      $view = $this->getExecutedView();
+      // Map bundle info to configuration array.
+      $bundle_info_map = [];
+      foreach ($bundle_info as $entity_type => $bundles) {
+        foreach ($bundles as $bundle => $label) {
+          $key = $entity_type . "_" . $bundle;
+          $bundle_info_map[$key] = ["entity_type" => $entity_type, "bundle" => $bundle, "label" => $label['label']];
+        }
 
-      // Set the referenced entities.
-      $vbo_entities = [];
-      if (!empty($this->context['list'])) {
-        foreach ($this->context['list'] as $k => $item) {
-          list(, , , $id,) = $item;
-          $vbo_entities[] = $id;
-        }
-      }
-      else {
-        foreach ($view->result as $k => $row) {
-          $vbo_entities[] = $row->id;
-        }
       }
 
       // Map referenced entities to get all entity types.
-      array_map(function ($view_result) use (&$query_data, $vbo_entities) {
-        $vbo_entity_id = $view_result->id;
-        $relationship_entities = $view_result->_relationship_entities;
+      foreach ($this->context["preconfiguration"] as $key => $entity_config) {
 
-        if (in_array($vbo_entity_id, $vbo_entities, TRUE)) {
-          foreach ($relationship_entities as $entity_type_id => $entity) {
+        // $key = $entity_type_id . "_" . $bundle;.
+        $whitelist_fields = $this->context["preconfiguration"][$key]['whitelist'];
 
-            $bundle = $entity->bundle();
+        $whitelist_fields = array_filter($whitelist_fields, function ($v, $k) {
+          return $v !== 0;
+        }, ARRAY_FILTER_USE_BOTH);
 
-            $key = $entity_type_id . "_" . $bundle;
-            $whitelist_fields = $this->context["preconfiguration"][$key]['whitelist'];
-
-            $whitelist_fields = array_filter($whitelist_fields, function ($v, $k) {
-              return $v !== 0;
-            }, ARRAY_FILTER_USE_BOTH);
-
-            // Check if entity type whitelisted by checking the array values
-            // have any value but zero
-            // https://bugs.php.net/bug.php?id=39579
-            // https://blog.josephscott.org/2012/03/12/why-php-strings-equal-zero/
-            if (!empty($whitelist_fields)) {
-              $id = $entity->get('id')->value;
-              $query_data[$entity_type_id][$id] = $id;
-            }
-          }
-        }
-
-      }, $view->result, $query_data, $vbo_entities);
-
-      // Get bundle data of the referenced entities.
-      foreach ($query_data as $entity_type_id => $entity_ids) {
-        $entityTypeDefinition = $this->entityTypeManager->getDefinition($entity_type_id);
-        if ($bundle_key = $entityTypeDefinition->getKey('bundle')) {
-          $id_key = $entityTypeDefinition->getKey('id');
-
-          $results = $this->database->select($entityTypeDefinition->getBaseTable(), 'base')
-            ->fields('base', [$bundle_key])
-            ->condition($id_key, $entity_ids, 'IN')
-            ->execute()
-            ->fetchCol();
-
-          foreach ($results as $bundle_id) {
-            if (!isset($bundle_data[$entity_type_id][$bundle_id])) {
-              $bundle_data[$entity_type_id][$bundle_id] = $bundle_info[$entity_type_id][$bundle_id]['label'];
-            }
-          }
-        }
-        else {
-          $bundle_data[$entity_type_id][$entity_type_id] = '';
+        // Check if entity type whitelisted by checking the array values
+        // have any value but zero
+        // https://bugs.php.net/bug.php?id=39579
+        // https://blog.josephscott.org/2012/03/12/why-php-strings-equal-zero/
+        if (!empty($whitelist_fields)) {
+          $label = $bundle_info_map[$key]['label'];
+          $bundle_id = $bundle_info_map[$key]['bundle'];
+          $entity_type_id = $bundle_info_map[$key]['entity_type'];
+          $bundle_data[$entity_type_id][$bundle_id] = $label;
         }
       }
+
     }
     else {
       \Drupal::messenger()->addError($this->t('No content selected'));
