@@ -233,7 +233,7 @@ class ModifyReferencedEntityValues extends ModifyEntityValues {
     }
 
     array_map(function ($view_result) use (&$query_data, $vbo_entities) {
-      $vbo_entity_id = $view_result->id;
+      $vbo_entity_id = $view_result->_entity->id();
       $relationship_entities = $view_result->_relationship_entities;
 
       if (in_array($vbo_entity_id, $vbo_entities, TRUE)) {
