@@ -242,7 +242,7 @@ class ModifyReferencedEntityValues extends ModifyEntityValues {
         }
       }
 
-    }, $view->result, $vbo_entities);
+    }, $this->view->result, $vbo_entities);
 
   }
 
