@@ -296,32 +296,8 @@ class ModifyReferencedEntityValues extends ModifyEntityValues {
     // have to make sure the view has vbo entities selected.
     $this->setReferencedEntities();
 
-    // In case of select all views,
+    // In case of select all views,.
     return parent::executeMultiple($objects);
-  }
-
-  /**
-   * Helper function, executes a view.
-   */
-  public function getExecutedView() {
-
-    $view = Views::getView($this->context['view_id']);
-
-    $view->setDisplay($this->context['display_id']);
-    if (!empty($this->context['arguments'])) {
-      $view->setArguments($this->context['arguments']);
-    }
-    if (!empty($this->context['exposed_input'])) {
-      $view->setExposedInput($this->context['exposed_input']);
-    }
-    $view->build();
-
-    $this->viewDataService->init($view, $view->getDisplay(), $this->context['relationship_id']);
-    $view->query->setLimit(0);
-    $view->query->setOffset(0);
-    $view->query->execute($view);
-
-    return $view;
   }
 
   /**
