@@ -4,7 +4,6 @@ namespace Drupal\views_bulk_reference_edit\Plugin\Action;
 
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\Core\Render\Element;
-use Drupal\views\Views;
 use Drupal\views_bulk_operations\Service\ViewsbulkOperationsViewData;
 use Drupal\views_bulk_operations\Service\ViewsBulkOperationsActionProcessor;
 use Drupal\Core\Entity\EntityTypeBundleInfoInterface;
