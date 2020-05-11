@@ -82,11 +82,14 @@ class ModifyReferencedEntityValues extends ModifyEntityValues {
       foreach ($this->context["preconfiguration"] as $key => $entity_config) {
 
         // $key = $entity_type_id . "_" . $bundle;.
+        if (!isset($this->context["preconfiguration"][$key]['whitelist'])) {
+          continue;
+        }
         $whitelist_fields = $this->context["preconfiguration"][$key]['whitelist'];
 
-        $whitelist_fields = array_filter($whitelist_fields, function ($v, $k) {
+        $whitelist_fields = is_array($whitelist_fields) ? array_filter($whitelist_fields, function ($v, $k) {
           return $v !== 0;
-        }, ARRAY_FILTER_USE_BOTH);
+        }, ARRAY_FILTER_USE_BOTH) : $whitelist_fields;
 
         // Check if entity type whitelisted by checking the array values
         // have any value but zero
