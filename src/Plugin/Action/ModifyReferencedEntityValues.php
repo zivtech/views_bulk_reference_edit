@@ -249,6 +249,19 @@ class ModifyReferencedEntityValues extends ModifyEntityValues {
   }
 
   /**
+   * Get the id of the entity of the current views row.
+   *
+   * @param \Drupal\views\ResultRow $row
+   *   The Views row object.
+   *
+   * @return int
+   *   return the entity ID.
+   */
+  public function getEntityId($row) {
+    return is_object($row) && is_object($row->_entity) ? $row->_entity->id() : FALSE;
+  }
+
+  /**
    * {@inheritdoc}
    */
   public function executeMultiple(array $objects) {
