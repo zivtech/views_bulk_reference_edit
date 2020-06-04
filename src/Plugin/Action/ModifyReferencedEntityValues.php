@@ -315,6 +315,16 @@ class ModifyReferencedEntityValues extends ModifyEntityValues {
         continue;
       }
 
+      // Remove required field validation,
+      // only whitelisted fields can be updated, see execute().
+      if (isset($element['#element_validate'])) {
+        foreach ($element['#element_validate'] as $validate_key => $validate_value) {
+          if (is_array($validate_value) && isset($validate_value[0], $validate_value[1]) && $validate_value[0] == 'Drupal\inline_entity_form\Plugin\Field\FieldWidget\InlineEntityFormComplex' && $validate_value[1] == 'requiredField') {
+            unset($element['#element_validate'][$validate_key]);
+          }
+        }
+      }
+
       // Modify the referenced element a bit so it doesn't
       // cause errors and returns correct data structure.
       $element['#required'] = FALSE;
