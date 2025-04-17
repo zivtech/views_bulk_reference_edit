@@ -61,11 +61,9 @@ class ModifyReferencedEntityValues extends ModifyEntityValues {
    *   keyed by entity type IDs.
    */
   protected function getViewBundles() {
-
     $bundle_data = [];
 
     if (!empty($this->context['list']) || $this->context["selected_count"] == $this->context["total_results"]) {
-
       $bundle_info = $this->bundleInfo->getAllBundleInfo();
 
       // Map bundle info to configuration array.
@@ -110,13 +108,12 @@ class ModifyReferencedEntityValues extends ModifyEntityValues {
     }
 
     return $bundle_data;
-
   }
 
   /**
    * {@inheritdoc}
    */
-  public function buildPreConfigurationForm(array $form, array $values, FormStateInterface $form_state) {
+  public function buildPreConfigurationForm(array $form, array $values, FormStateInterface $form_state): array {
 
     // Add supported referenced entities.
     $entities = array_map(function ($entity) {
@@ -162,7 +159,6 @@ class ModifyReferencedEntityValues extends ModifyEntityValues {
    * {@inheritdoc}
    */
   public function execute($entity = NULL) {
-
     $referencedEntities = $this->getReferencedEntities($entity->id());
     // Load referenced entity.
     $result = $this->t('Skip (field is not present on this bundle)');
@@ -226,7 +222,6 @@ class ModifyReferencedEntityValues extends ModifyEntityValues {
    * {@inheritdoc}
    */
   public function setReferencedEntities() {
-
     // Set the referenced entities.
     $vbo_entities = [];
 
@@ -245,7 +240,6 @@ class ModifyReferencedEntityValues extends ModifyEntityValues {
       }
 
     }, $this->view->result, $vbo_entities);
-
   }
 
   /**
@@ -265,7 +259,6 @@ class ModifyReferencedEntityValues extends ModifyEntityValues {
    * {@inheritdoc}
    */
   public function executeMultiple(array $objects) {
-
     // Build the Referenced entities array.
     // have to make sure the view has vbo entities selected.
     $this->setReferencedEntities();
